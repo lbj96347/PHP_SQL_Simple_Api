@@ -41,6 +41,7 @@
 <link rel='stylesheet' type='text/css' href='' />
 </head>
 <body>
+  Hello world!Welcome to PHP_simple_api.
 </body>
 <script type='text/javascript' language='javascript' src=''></script>
 </html>

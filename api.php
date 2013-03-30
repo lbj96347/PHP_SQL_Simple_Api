@@ -84,7 +84,6 @@ class database {
       mysql_close($con);
       return true;
     }else{
-      $row = mysql_fetch_array($result);
       $data_group = array();
       while($row = mysql_fetch_array($result))
       {

@@ -58,22 +58,28 @@ switch( $_socket )
  *
  * (完）
  *
+ * 如果使用云计算平台，请根据云计算平台配置数据库方式配置数据库链接
+ *
  */
 
 class database {
+
   var $sql;//查询、插入或者更新数据库的语句
   var $data_item_structure;
   var $fetch_switch;
-
+  var $local_debug = false;//上线时记得把选项改为false，确定目前时发布版本
 
   function connect_db(){
     header("Content-type: application/json;");
-    $con = mysql_connect("127.0.0.1","root","");
-    if (!$con)
-    {
-      die('Could not connect: ' . mysql_error());
+    if( $this->local_debug ){
+      $con = mysql_connect("127.0.0.1","root","");//write your loca database configure 
+      $con ? : die('Could not connect: ' . mysql_error());
     }
-    mysql_select_db("test", $con);
+    else{
+      $con = mysql_connect( SAE_MYSQL_HOST_M . ':' . SAE_MYSQL_PORT, SAE_MYSQL_USER ,SAE_MYSQL_PASS);
+      $con ? : die('Could not connect: ' . mysql_error());
+    }
+    $this->local_debug ? mysql_select_db("test", $con ) : mysql_select_db(SAE_MYSQL_DB, $con); 
     mysql_query("set names utf8;");
     $result = mysql_query( $this->sql );
     if( $this->fetch_switch == true ){
@@ -90,7 +96,7 @@ class database {
         $field_array = $this->data_item_structure;
         $data_item = array();
         for( $i = 0 ; $i < count($field_array) ; $i++ ){
-          $data_item[ $field_array[$i] ] = $row[ $field_array[$i] ] ;
+          $data_item[ $field_array[$i] ] = $row[ $field_array[$i] ];
         }
         array_push( $data_group, $data_item );
       }
@@ -99,6 +105,8 @@ class database {
     }
   }
 }
+
+
 
 
 /*

@@ -18,9 +18,13 @@ Usage
 
   2.数据库类使用办法
 
+     include('sql_simple_api.php');
+
      $example_object = new database;
 
      $example_object->sql = 'SELCET ... ';//SQL语句
+
+     $example_object->output_array = true;//设置为true的时候会在结果返回数组，这个时候对于处理一对多，多表联查的时候有作用
 
      $example_object->data_item_structure = array('num1','num2');//需要查询的字段
 
